@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chatbot Website</title>
+    <style>
+        #chatbox {
+            width: 600px;
+            height: 600px;
+            border: 5px solid red;
+            padding: 50px;
+            overflow: auto;
+ 	    font-medium;
+        }
+        #userInput {
+            width: 900px;
+        }
+    </style>
+  <script defer src="https://pyscript.net/releases/2022.12.1/pyscript.js"></script>
+</head>
+<body>
+    <h1>Welcome to the Chatbot Website!</h1>
+    <div id="chatbox">
+        <p>Hi! I am a chatbot. How can I help you?</p>
+    </div>
+    <input id="userInput" type="text" placeholder="Type your message here...">
+    <button onclick="sendMessage()">Send</button>
+
+    <script>
+        async function sendMessage() {
+            const userInput = document.getElementById("userInput").value.trim();
+            if (userInput) {
+                const chatbox = document.getElementById("chatbox");
+                chatbox.innerHTML += `<p><strong>You:</strong> ${userInput}</p>`;
+                const response = await fetch('/chatbot', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ message: userInput })
+                });
+                const data = await response.json();
+                chatbox.innerHTML += `<p><strong>Chatbot:</strong> ${data.message}</p>`;
+            }
+            document.getElementById("userInput").value = "";
+        }
+	<py-script src="./flask.py"></py-script>
+
+    </script>
+
+<py-script src="./flask.py"></py-script>
+</body>
+</html>
